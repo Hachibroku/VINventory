@@ -19,12 +19,13 @@ class TechnicianEncoder(ModelEncoder):
 class AppointmentEncoder(ModelEncoder):
     model = Appointment
     properties = [
+        "id",
         "date_time",
         "reason",
         "status",
         "vin",
-        "customer"
-        "technician"
+        "customer",
+        "technician",
     ]
 
     encoders = {
@@ -32,12 +33,13 @@ class AppointmentEncoder(ModelEncoder):
     }
 
 
-@require_http_methods('GET', 'POST')
+@require_http_methods(['GET', 'POST'])
 def api_technicians(request):
     if request.method == "GET":
         technicians = Technician.objects.all()
         return JsonResponse(
-            {"technicians": technicians}
+            {"technicians": technicians},
+            encoder=TechnicianEncoder,
         )
     else:
         content = json.loads(request.body)
@@ -49,7 +51,7 @@ def api_technicians(request):
         )
 
 
-@require_http_methods(["GET", "PUT", "DELETE"])
+@require_http_methods(['GET', 'PUT', 'DELETE'])
 def api_technician(request, pk):
     if request.method == "GET":
         try:
@@ -61,7 +63,7 @@ def api_technician(request, pk):
             )
         except Technician.DoesNotExist:
             return JsonResponse(
-                {"message": "The technician you are trying to access does not exist"}
+                {"message": "The technician you are trying to access does not exist"},
                 status=400
             )
     elif request.method == "PUT":
@@ -88,7 +90,7 @@ def api_technician(request, pk):
         return JsonResponse({"deleted": count > 0})
 
 
-@require_http_methods('"GET, "POST')
+@require_http_methods(['GET', 'POST'])
 def api_appointments(request, technician_id=None):
     if request.method == "GET":
         if technician_id is not None:
@@ -103,8 +105,8 @@ def api_appointments(request, technician_id=None):
         content = json.loads(request.body)
 
         try:
-            technician_href = content["technician"]
-            technician = Technician.objects.get(import_href=technician_href)
+            technician_id = content["technician"]
+            technician = Technician.objects.get(pk=technician_id)
             content["technician"] = technician
         except Technician.DoesNotExist:
             return JsonResponse(
@@ -120,7 +122,7 @@ def api_appointments(request, technician_id=None):
         )
 
 
-@require_http_methods(["GET", "PUT", "DELETE"])
+@require_http_methods(['GET', 'PUT', 'DELETE'])
 def api_appointment(request, pk):
     if request.method == "GET":
         try:
