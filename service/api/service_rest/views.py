@@ -160,3 +160,30 @@ def api_appointment(request, pk):
     else:
         count, _ = Appointment.objects.filter(id=pk).delete()
         return JsonResponse({"deleted": count > 0})
+
+@require_http_methods(["PUT"])
+def api_cancel_appointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    appointment.cancel()
+    body = {
+        "status": appointment.status,
+    }
+    return JsonResponse(
+        appointment,
+        encoder=AppointmentEncoder,
+        safe=False,
+    )
+
+
+@require_http_methods(["PUT"])
+def api_finish_appointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    appointment.finish()
+    body = {
+        "status": appointment.status,
+    }
+    return JsonResponse(
+        appointment,
+        encoder=AppointmentEncoder,
+        safe=False,
+    )
