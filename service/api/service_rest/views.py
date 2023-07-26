@@ -10,6 +10,7 @@ from .models import Technician, AutomobileVO, Appointment
 class TechnicianEncoder(ModelEncoder):
     model = Technician
     properties = [
+        "id",
         "first_name",
         "last_name",
         "employee_id",
@@ -163,27 +164,35 @@ def api_appointment(request, pk):
 
 @require_http_methods(["PUT"])
 def api_cancel_appointment(request, pk):
-    appointment = Appointment.objects.get(id=pk)
-    appointment.cancel()
-    body = {
-        "status": appointment.status,
-    }
-    return JsonResponse(
-        appointment,
-        encoder=AppointmentEncoder,
-        safe=False,
-    )
+    try:
+        appointment = Appointment.objects.get(id=pk)
+        appointment.status = "cancelled"
+        appointment.save()
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
+    except Appointment.DoesNotExist:
+        return JsonResponse(
+            {"message": "invalid appointment id"},
+            status=400
+        )
 
 
 @require_http_methods(["PUT"])
 def api_finish_appointment(request, pk):
-    appointment = Appointment.objects.get(id=pk)
-    appointment.finish()
-    body = {
-        "status": appointment.status,
-    }
-    return JsonResponse(
-        appointment,
-        encoder=AppointmentEncoder,
-        safe=False,
-    )
+    try:
+        appointment = Appointment.objects.get(id=pk)
+        appointment.status = "finished"
+        appointment.save()
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
+    except Appointment.DoesNotExist:
+        return JsonResponse(
+            {"message": "invalid appointment id"},
+            status=400
+        )
