@@ -4,6 +4,7 @@ from .models import AutomobileVO, Salesperson, Customer, Sale
 from .encoders import AutomobileVOEncoder, SalespersonEncoder, CustomerEncoder, SaleEncoder
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
+from django.db import IntegrityError
 
 
 
@@ -101,44 +102,42 @@ def api_sales(request):
             safe=False
         )
     else:
-        content = json.loads(request.body)
-
         try:
-            salesperson = Salesperson.objects.get(id=content["salesperson"])
-            content["salesperson"] = salesperson
-        except Salesperson.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid Salesperson"},
-                status=400,
-            )
+            content = json.loads(request.body)
 
-        try:
             automobile = AutomobileVO.objects.get(vin=content["automobile"])
+            salesperson = Salesperson.objects.get(id=content["salesperson"])
+            customer = Customer.objects.get(id=content["customer"])
+
+            automobile.sold = "True"
+            automobile.save()
+
             content["automobile"] = automobile
-        except AutomobileVO.DoesNotExist:
+            content["salesperson"] = salesperson
+            content["customer"] = customer
+
+            sales = Sale.objects.create(**content)
+
             return JsonResponse(
-                {"message": "Invalid VIN"},
+                sales,
+                encoder=SaleEncoder,
+                safe=False,
+            )
+        except (ValueError, IntegrityError, AutomobileVO.DoesNotExist, Salesperson.DoesNotExist, Customer.DoesNotExist) as e:
+            return JsonResponse(
+                {"message": str(e)},
                 status=400,
             )
-
-        try:
-            customer = Customer.objects.get(id=content["customer"])
-            content["customer"] = customer
-        except Customer.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid Customer"},
-                status = 400,
-            )
-        
-        sales = Sale.objects.create(**content)
-        return JsonResponse(
-            sales,
-            encoder=SaleEncoder,
-            safe=False,
-        )
-
-
 
 @require_http_methods(["GET", "DELETE"])
 def api_sales_specific(request, id):
-    pass
+    if request.method == "GET":
+        sale = Sale.objects.filter(id=id)
+        return JsonResponse(
+            {"sale": sale},
+            encoder=SaleEncoder,
+            safe=False
+        )
+    else:
+        count, _ = Sale.objects.filter(id=id).delete()
+        return JsonResponse({"Deleted": count > 0})
