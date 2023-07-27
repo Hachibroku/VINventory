@@ -35,7 +35,7 @@ export default function ManufacturersList() {
           setManufacturers(newManufacturers.manufacturers);
         }
       } catch (err) {
-        // Handle error
+        console.log(err)
       }
     };
 
