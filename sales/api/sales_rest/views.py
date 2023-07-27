@@ -7,15 +7,12 @@ from django.http import JsonResponse
 from django.db import IntegrityError
 
 
-
-
-
 @require_http_methods(["GET", "POST"])
 def api_salesperson(request):
     if request.method == "GET":
         salesperson = Salesperson.objects.all()
         return JsonResponse(
-            {"salesperson" : salesperson},
+            {"salespeople" : salesperson},
             encoder=SalespersonEncoder,
             safe=False,
         )
@@ -39,6 +36,11 @@ def api_salesperson(request):
 
 @require_http_methods(["GET", "DELETE"])
 def api_salesperson_specific(request, id):
+    try:
+        salesperson = Salesperson.objects.get(id=id)
+    except Salesperson.DoesNotExist:
+        return JsonResponse({"Error": "Salesperson does not exist"}, status=404)
+
     if request.method == "GET":
         salesperson = Salesperson.objects.filter(id=id)
         return JsonResponse(
@@ -56,7 +58,7 @@ def api_customer(request):
     if request.method == "GET":
         customer = Customer.objects.all()
         return JsonResponse(
-            {"customer" : customer},
+            {"customers" : customer},
             encoder=CustomerEncoder,
             safe=False,
         )
@@ -80,6 +82,11 @@ def api_customer(request):
 
 @require_http_methods(["GET", "DELETE"])
 def api_customer_specific(request, id):
+    try:
+        customer = Customer.objects.get(id=id)
+    except Customer.DoesNotExist:
+        return JsonResponse({"Error": "Customer does not exist"}, status=404)
+
     if request.method == "GET":
         customer = Customer.objects.filter(id=id)
         return JsonResponse(
@@ -97,7 +104,7 @@ def api_sales(request):
     if request.method == "GET":
         sale = Sale.objects.all()
         return JsonResponse(
-            {"Sale": sale},
+            {"sales": sale},
             encoder=SaleEncoder,
             safe=False
         )
@@ -129,12 +136,18 @@ def api_sales(request):
                 status=400,
             )
 
+
 @require_http_methods(["GET", "DELETE"])
 def api_sales_specific(request, id):
+    try:
+        sale = Sale.objects.get(id=id)
+    except Sale.DoesNotExist:
+        return JsonResponse({"Error": "Sale does not exist"}, status=404)
+
     if request.method == "GET":
         sale = Sale.objects.filter(id=id)
         return JsonResponse(
-            {"sale": sale},
+            {"sales": sale},
             encoder=SaleEncoder,
             safe=False
         )

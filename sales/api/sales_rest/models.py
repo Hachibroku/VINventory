@@ -5,6 +5,9 @@ class AutomobileVO(models.Model):
     vin = models.CharField(max_length=100, unique=True)
     sold = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.first_name
+
 
 class Salesperson(models.Model):
     first_name = models.CharField(max_length=100)
