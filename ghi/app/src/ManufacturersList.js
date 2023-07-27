@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import ManufacturerCreate from "./ManufacturerCreate";
 
 export default function ManufacturersList() {
     const [manufacturers, setManufacturers] = useState(null);
@@ -15,29 +14,6 @@ export default function ManufacturersList() {
     useEffect(() => {
       getManufacturers();
     }, []);
-
-    const deleteManufacturer = async (id) => {
-      const confirmed = window.confirm("Are you sure you want to delete this manufacturer?");
-      if (!confirmed) {
-        return;
-      }
-
-      try {
-        const url = `http://localhost:8100/api/manufacturers/${id}/`;
-        const deleteResponse = await fetch(url, {
-          method: "delete",
-        });
-
-        if (deleteResponse.ok) {
-          const reloadUrl = `http://localhost:8100/api/manufacturers/`;
-          const reloadResponse = await fetch(reloadUrl);
-          const newManufacturers = await reloadResponse.json();
-          setManufacturers(newManufacturers.manufacturers);
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    };
 
 
     if (manufacturers === null) {
@@ -57,17 +33,11 @@ export default function ManufacturersList() {
               return (
                 <tr key={manufacturer.id}>
                   <td>{manufacturer.name}</td>
-                  <td>
-                  <button onClick={() => deleteManufacturer(manufacturer.id)} className="btn btn-danger">
-                    Delete
-                  </button>
-                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <ManufacturerCreate />
       </>
     );
   }

@@ -37,7 +37,7 @@ export default function ModelCreate() {
         const data = {}
         data.name = name;
         data.picture_url = pictureUrl;
-        data.manufacturer = manufacturer;
+        data.manufacturer_id = manufacturer;
 
         const modelUrl = 'http://localhost:8100/api/models/';
         const fetchConfig = {
@@ -81,7 +81,7 @@ export default function ModelCreate() {
                     <option value="">Choose manufacturer</option>
                     {manufacturers.map(manufacturer => {
                       return (
-                        <option key={manufacturer.href} value={manufacturer.href}>
+                        <option key={manufacturer.id} value={manufacturer.id}>
                           {`${manufacturer.name} `}
                         </option>
                       );
