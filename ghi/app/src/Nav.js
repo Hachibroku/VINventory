@@ -1,29 +1,75 @@
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import './Nav.css';
+import DropdownMenu from './DropdownMenu';
 
 function Nav() {
+  const [dropdownState, setDropdownState] = useState({
+    salespeople: false,
+    customers: false,
+    sales: false,
+  });
+
+  const location = useLocation();
+
+  const handleDropdownToggle = (menu) => {
+    setDropdownState(prevState => ({
+      salespeople: false,
+      customers: false,
+      sales: false,
+      [menu]: !prevState[menu]
+    }));
+  }
+
+  useEffect(() => {
+    setDropdownState({
+      salespeople: false,
+      customers: false,
+      sales: false,
+    });
+  }, [location]);
+
+  const menus = [
+    { name: 'salespeople', routes: [
+      { path: '/salespeople', name: 'Salespeople' },
+      { path: '/salespeople/new', name: 'Add a Salesperson' }
+    ] },
+    { name: 'customers', routes: [
+      { path: '/customers', name: 'Customers' },
+      { path: '/customers/new', name: 'Add a Customer' }
+    ] },
+    { name: 'sales', routes: [
+      { path: '/sales', name: 'List of All Sales' },
+      { path: '/sales/new', name: 'New Sale' },
+      { path: '/sales/history', name: 'Salesperson Sales History' }
+    ] },
+  ];
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">CarCar</NavLink>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler" type="button">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="navbar-collapse">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/salespeople">Salespeople</NavLink>
-              <NavLink className="nav-link" to="/salespeople/new">Add a Salesperson</NavLink>
-              <NavLink className="nav-link" to="/customers">Customer</NavLink>
-              <NavLink className="nav-link" to="/customers/new">Add a Customer</NavLink>
-              <NavLink className="nav-link" to="/sales">List of All Sales</NavLink>
-              <NavLink className="nav-link" to="/sales/new">New Sale</NavLink>
-              <NavLink className="nav-link" to="/sales/history">Salesperon Sales History</NavLink>
+            <li className="nav-item nav-dropdowns">
+              {menus.map(menu => (
+                <DropdownMenu
+                  key={menu.name}
+                  name={menu.name}
+                  routes={menu.routes}
+                  isOpen={dropdownState[menu.name]}
+                  handleToggle={() => handleDropdownToggle(menu.name)}
+                />
+              ))}
             </li>
           </ul>
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
 export default Nav;
