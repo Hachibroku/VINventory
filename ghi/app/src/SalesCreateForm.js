@@ -17,7 +17,7 @@ function SaleCreateForm() {
             fetch('http://localhost:8090/api/salespeople/').then(response => response.json()),
             fetch('http://localhost:8090/api/customers/').then(response => response.json()),
         ]).then(([autoData, salespersonData, customerData]) => {
-            setAutomobiles(autoData.autos);
+            setAutomobiles(autoData.autos.filter(auto => auto.sold === false));
             setSalespersons(salespersonData.salespeople);
             setCustomers(customerData.customers);
             setLoading(false);
@@ -32,7 +32,8 @@ function SaleCreateForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const selectedAutoVin = automobiles.find(auto => auto.id === selectedAutomobile)?.vin;
+        const selectedAuto = automobiles.find(auto => auto.id === selectedAutomobile);
+        const selectedAutoVin = selectedAuto?.vin;
 
         const newSale = {
             automobile: selectedAutoVin,
@@ -53,6 +54,27 @@ function SaleCreateForm() {
         const response = await fetch(saleUrl, fetchConfig);
         if (response.ok) {
             const createdSale = await response.json();
+
+            // Now that the sale is successful, update the sold status of the automobile
+            const inventoryUrl = `http://localhost:8100/api/automobiles/${selectedAuto.vin}/`;  // Assuming the API accepts PUT on this URL
+            const fetchInventoryConfig = {
+                method: "PUT",
+                body: JSON.stringify({ sold: true }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            const inventoryResponse = await fetch(inventoryUrl, fetchInventoryConfig);
+            if (inventoryResponse.ok) {
+                // sold status update was successful. Refresh the list of automobiles
+                const updatedAutoData = await fetch('http://localhost:8100/api/automobiles/').then(response => response.json());
+                setAutomobiles(updatedAutoData.autos.filter(auto => auto.sold === false));
+            } else {
+                // handle inventory update error
+                const errorData = await inventoryResponse.json();
+                alert('There was an error updating the inventory: ' + JSON.stringify(errorData));
+            }
+
             alert(`Sale was created successfully with ID: ${createdSale.id}`);
             setSelectedAutomobile(null);
             setSelectedSalesperson(null);

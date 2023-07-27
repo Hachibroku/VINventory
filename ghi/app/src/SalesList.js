@@ -34,14 +34,40 @@ function SalesList() {
 
         try {
             const url = `http://localhost:8090/api/sales/${id}/`;
-            const deleteResponse = await fetch(url, {
-                method: "delete",
-            });
+            const saleResponse = await fetch(url);
+            if (saleResponse.ok) {
+                const sale = await saleResponse.json();
 
-            if (deleteResponse.ok) {
-                getSale();
+                if (sale && sale.sales && sale.sales[0] && sale.sales[0].automobile) {
+                    const vin = sale.sales[0].automobile.vin;
+
+                    const autoUrl = `http://localhost:8100/api/automobiles/${vin}/`;
+                    const autoResponse = await fetch(autoUrl, {
+                        method: "PUT",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ sold: false }),
+                    });
+
+                    if (autoResponse.ok) {
+                        const deleteResponse = await fetch(url, {
+                            method: "delete",
+                        });
+
+                        if (deleteResponse.ok) {
+                            getSale();
+                        } else {
+                            throw new Error('Failed to delete sale');
+                        }
+                    } else {
+                        throw new Error('Failed to update automobile sold status');
+                    }
+                } else {
+                    throw new Error('Automobile information not found in sale');
+                }
             } else {
-                throw new Error('Failed to delete sale');
+                throw new Error('Failed to fetch sale');
             }
         } catch (err) {
             setError(err.message);

@@ -102,12 +102,18 @@ def api_customer_specific(request, id):
 @require_http_methods(["GET", "POST"])
 def api_sales(request):
     if request.method == "GET":
-        sale = Sale.objects.all()
+        sales = Sale.objects.all()
+
+        salesperson_id = request.GET.get('salesperson')
+        if salesperson_id is not None:
+            sales = sales.filter(salesperson__id=salesperson_id)
+
         return JsonResponse(
-            {"sales": sale},
+            {"sales": sales},
             encoder=SaleEncoder,
             safe=False
         )
+
     else:
         try:
             content = json.loads(request.body)
@@ -115,9 +121,6 @@ def api_sales(request):
             automobile = AutomobileVO.objects.get(vin=content["automobile"])
             salesperson = Salesperson.objects.get(id=content["salesperson"])
             customer = Customer.objects.get(id=content["customer"])
-
-            automobile.sold = "True"
-            automobile.save()
 
             content["automobile"] = automobile
             content["salesperson"] = salesperson

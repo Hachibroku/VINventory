@@ -13,21 +13,20 @@ function SalesHistory() {
   }, []);
 
   // Fetch the sales for the selected salesperson whenever it changes
+  const handleSalespersonChange = ({ target: { value } }) => {
+    setSelectedSalesperson(value);
+  };
+
   useEffect(() => {
     if (selectedSalesperson) {
-      fetch(`http://localhost:8090/api/sales?salesperson=${selectedSalesperson}`)
+
+        fetch(`http://localhost:8090/api/sales?salesperson=${selectedSalesperson}`)
         .then(response => response.json())
         .then(data => {
-          console.log('Sales data:', data);  // Log the response data
           setSales(data.sales);
         });
     }
   }, [selectedSalesperson]);
-
-
-  const handleSalespersonChange = ({ target: { value } }) => {
-    setSelectedSalesperson(value);
-  };
 
   return (
     <div>
@@ -39,6 +38,7 @@ function SalesHistory() {
         ))}
       </select>
       {sales.map(sale => (
+
         <div key={sale.id}>
           <p>Salesperson: {sale.salesperson.first_name} {sale.salesperson.last_name}</p>
           <p>Customer: {sale.customer.first_name} {sale.customer.last_name}</p>
