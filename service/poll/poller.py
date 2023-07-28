@@ -11,6 +11,7 @@ django.setup()
 
 # Import models from service_rest, here. Ignore vs-code error hinting
 # from service_rest.models import Something
+from service_rest.models import AutomobileVO
 
 
 def poll(repeat=True):
@@ -19,8 +20,22 @@ def poll(repeat=True):
         try:
             # Write your polling logic, here
             # Do not copy entire file
-            pass
-        
+            response = requests.get('http://project-beta-inventory-api-1:8000/api/automobiles/')
+            print(response.status_code)
+            if response.status_code == 200:
+                automobiles = response.json()
+                for automobile in automobiles["automobiles"]:
+                    AutomobileVO.objects.update_or_create(
+                        import_href=automobile['href'],
+                        defaults={
+                            'vin': automobile['vin'],
+                            'sold': automobile['sold'],
+                        }
+                    )
+                print(f'Imported {len(automobiles["automobiles"])} automobiles')
+            else:
+                print(f'Error in API call: {response.status_code}')
+
         except Exception as e:
             print(e, file=sys.stderr)
 
