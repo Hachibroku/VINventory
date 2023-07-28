@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function AppointmentHistory() {
+export default function AppointmentListHistory() {
   const [appointments, setAppointments] = useState(null);
   const [search, setSearch] = useState('');
   const [automobiles, setAutomobiles] = useState([]);
