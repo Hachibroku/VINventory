@@ -45,7 +45,6 @@ function App() {
           <Route path="/models/new" element={<ModelCreate />} />
           <Route path="/automobiles" element={<AutomobilesList />} />
           <Route path="/automobiles/new" element={<AutomobileCreate />} />
-          <Route path="/appointments/history" element={<AppointmentHistory />} />
         </Routes>
       </div>
     </BrowserRouter>
