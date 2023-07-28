@@ -45,7 +45,7 @@ function Nav() {
     ] },
     { name: 'technicians', routes: [
       { path: '/technicians', name: 'List All Technicians'},
-      { path: '/technicians/news', name: 'New Technician'}
+      { path: '/technicians/new', name: 'New Technician'}
     ] },
     { name: 'appointments', routes: [
       { path: '/appointments', name: 'List All Appointments'},
