@@ -42,7 +42,7 @@ export default function AutomobileCreate() {
         data.color = color;
         data.year = year;
         data.vin = vin;
-        data.model = model;
+        data.model_id = model;
 
         const automobileUrl = 'http://localhost:8100/api/automobiles/';
         const fetchConfig = {
@@ -91,7 +91,7 @@ export default function AutomobileCreate() {
                     <option value="">Choose model</option>
                     {models.map(model => {
                       return (
-                        <option key={model.href} value={model.href}>
+                        <option key={model.id} value={model.id}>
                           {`${model.name} `}
                         </option>
                       );
