@@ -1,37 +1,8 @@
-from django.shortcuts import render
 import json
 from django.http import JsonResponse
-from common.json import ModelEncoder
 from django.views.decorators.http import require_http_methods
-from .models import Technician, AutomobileVO, Appointment
-
-
-
-class TechnicianEncoder(ModelEncoder):
-    model = Technician
-    properties = [
-        "id",
-        "first_name",
-        "last_name",
-        "employee_id",
-    ]
-
-
-class AppointmentEncoder(ModelEncoder):
-    model = Appointment
-    properties = [
-        "id",
-        "date_time",
-        "reason",
-        "status",
-        "vin",
-        "customer",
-        "technician",
-    ]
-
-    encoders = {
-        "technician": TechnicianEncoder()
-    }
+from .encoders import TechnicianEncoder, AppointmentEncoder
+from .models import Technician, Appointment
 
 
 @require_http_methods(['GET', 'POST'])
@@ -161,6 +132,7 @@ def api_appointment(request, pk):
     else:
         count, _ = Appointment.objects.filter(id=pk).delete()
         return JsonResponse({"deleted": count > 0})
+
 
 @require_http_methods(["PUT"])
 def api_cancel_appointment(request, pk):
