@@ -9,7 +9,6 @@ export default function AutomobilesList() {
         const listAutomobiles = await response.json();
         console.log(listAutomobiles)
         setAutomobiles(listAutomobiles.autos);
-        console.log(listAutomobiles.autos.vin)
       }
     };
 
