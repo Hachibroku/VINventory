@@ -38,7 +38,7 @@ function App() {
           <Route path="/technicians/new" element={<TechnicianCreate />} />
           <Route path="/appointments" element={<AppointmentsList />} />
           <Route path="/appointments/new" element={<AppointmentCreate />} />
-          <Route path="/manufacturers" element={<ManufacturersList />} />
+          <Route path="/manufacturers" element={<ManufacturersList />} Ad/>
           <Route path="/manufacturers/new" element={<ManufacturerCreate />} />
           <Route path="/models" element={<ModelsList />} />
           <Route path="/models/new" element={<ModelCreate />} />
