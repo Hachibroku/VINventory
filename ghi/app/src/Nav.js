@@ -32,36 +32,36 @@ function Nav() {
   const menus = [
     { name: 'salespeople', routes: [
       { path: '/salespeople', name: 'Salespeople' },
-      { path: '/salespeople/new', name: 'Add a Salesperson' }
+      { path: '/salespeople/new', name: 'New Salesperson' }
     ] },
     { name: 'customers', routes: [
       { path: '/customers', name: 'Customers' },
-      { path: '/customers/new', name: 'Add a Customer' }
+      { path: '/customers/new', name: 'New Customer' }
     ] },
     { name: 'sales', routes: [
-      { path: '/sales', name: 'List of All Sales' },
+      { path: '/sales', name: 'List All Sales' },
       { path: '/sales/new', name: 'New Sale' },
       { path: '/sales/history', name: 'Salesperson Sales History' }
     ] },
     { name: 'technicians', routes: [
-      { path: '/technicians', name: 'List of Technicians'},
+      { path: '/technicians', name: 'List All Technicians'},
       { path: '/technicians/news', name: 'New Technician'}
     ] },
     { name: 'appointments', routes: [
-      { path: '/appointments', name: 'List of Appointments'},
+      { path: '/appointments', name: 'List All Appointments'},
       { path: '/appointments/new', name: 'New Appointment'},
       { path: '/appointments/history', name: 'Appointment History'}
     ] },
     { name: 'manufacturers', routes: [
-      { path: '/manufacturers', name: 'List of Manufacturers'},
+      { path: '/manufacturers', name: 'List All Manufacturers'},
       { path: '/manufacturers/new', name: 'New Manufacturer'},
     ] },
     { name: 'models', routes: [
-      { path: '/models', name: 'List of Models'},
+      { path: '/models', name: 'List All Models'},
       { path: '/models/new', name: 'New Model'}
     ] },
     { name: 'automobiles', routes: [
-      { path: '/automobiles', name: 'List of Automobiles'},
+      { path: '/automobiles', name: 'List All Automobiles'},
       { path: '/automobiles/new', name: 'New Automobile'}
     ]}
 
