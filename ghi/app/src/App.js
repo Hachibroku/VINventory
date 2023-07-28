@@ -18,7 +18,6 @@ import ModelsList from './VehicleModelsList';
 import ModelCreate from './VehicleModelCreateForm';
 import AutomobilesList from './AutomobilesList';
 import AutomobileCreate from './AutomobileCreateForm';
-import AppointmentHistory from './AppointmentHistory';
 
 function App() {
   return (
