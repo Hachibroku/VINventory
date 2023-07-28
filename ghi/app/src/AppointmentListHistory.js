@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 export default function AppointmentListHistory() {
   const [appointments, setAppointments] = useState(null);
-  const [search, setSearch] = useState('');
   const [automobiles, setAutomobiles] = useState([]);
+  const [search, setSearch] = useState('');
 
 
   const getAppointments = async () => {
@@ -11,7 +11,6 @@ export default function AppointmentListHistory() {
     const response = await fetch(appointmentsUrl);
     if (response.ok) {
       const listAppointments = await response.json();
-      console.log(listAppointments)
       setAppointments(listAppointments.appointment);
     }
   };
@@ -21,13 +20,13 @@ export default function AppointmentListHistory() {
     const response = await fetch(automobilesUrl);
     if (response.ok) {
       const listAutomobiles = await response.json();
-      console.log(listAutomobiles)
       setAutomobiles(listAutomobiles.autos);
     }
   };
 
   useEffect(() => {
     getAppointments();
+    getAutomobiles();
   }, []);
 
   const handleSearch = event => {
@@ -60,11 +59,13 @@ export default function AppointmentListHistory() {
           </tr>
         </thead>
         <tbody>
-          {filteredAppointments.map((appointment, autos) => {
+          {filteredAppointments.map((appointment) => {
+            const auto = automobiles.find(a => a.vin === appointment.vin);
+            const isVip = auto && auto.sold;
             return (
               <tr key={appointment.id}>
                 <td>{appointment.date_time}</td>
-                <td> {autos.sold ? 'Yes': 'No'} </td>
+                <td>{isVip ? 'Yes' : 'No'}</td>
                 <td>{appointment.reason}</td>
                 <td>{appointment.vin}</td>
                 <td>{appointment.customer}</td>

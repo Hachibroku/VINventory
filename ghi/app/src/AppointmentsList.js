@@ -18,7 +18,6 @@ export default function AppointmentsList() {
     const response = await fetch(automobilesUrl);
     if (response.ok) {
       const listAutomobiles = await response.json();
-      console.log(listAutomobiles)
       setAutomobiles(listAutomobiles.autos);
     }
   };
@@ -41,6 +40,7 @@ export default function AppointmentsList() {
     return null;
   }
 
+
   const filteredAppointments = appointments.filter(appointment =>
     appointment.status !== 'Cancelled' && appointment.status !== 'Finished');
 
@@ -50,23 +50,25 @@ export default function AppointmentsList() {
         <thead>
           <tr>
             <th>Date and Time</th>
+            <th>VIP</th>
             <th>Reason</th>
             <th>VIN</th>
             <th>Customer</th>
             <th>Technician</th>
-            <th>VIP</th>
           </tr>
         </thead>
         <tbody>
-          {filteredAppointments.map((appointment, autos) => {
+          {filteredAppointments.map((appointment) => {
+            const auto = automobiles.find(a => a.vin === appointment.vin);
+            const isVip = auto && auto.sold;
             return (
               <tr key={appointment.id}>
                 <td>{appointment.date_time}</td>
+                <td>{isVip ? 'Yes' : 'No'}</td>
                 <td>{appointment.reason}</td>
                 <td>{appointment.vin}</td>
                 <td>{appointment.customer}</td>
                 <td>{appointment.technician.first_name}</td>
-                <td> {autos.sold ? 'Yes': 'No'} </td>
                 <td>
                   <button
                     className="btn btn-danger"
@@ -85,6 +87,7 @@ export default function AppointmentsList() {
             );
           })}
         </tbody>
+
       </table>
     </>
   );
