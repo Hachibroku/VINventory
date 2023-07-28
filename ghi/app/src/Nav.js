@@ -31,11 +31,11 @@ function Nav() {
 
   const menus = [
     { name: 'salespeople', routes: [
-      { path: '/salespeople', name: 'Salespeople' },
+      { path: '/salespeople', name: 'List All Salespeople' },
       { path: '/salespeople/new', name: 'New Salesperson' }
     ] },
     { name: 'customers', routes: [
-      { path: '/customers', name: 'Customers' },
+      { path: '/customers', name: 'List All Customers' },
       { path: '/customers/new', name: 'New Customer' }
     ] },
     { name: 'sales', routes: [
