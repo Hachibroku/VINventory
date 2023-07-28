@@ -11,6 +11,7 @@ import SalesHistory from './SalesHistory';
 import TechniciansList from './TechniciansList';
 import TechnicianCreate from './TechnicianCreateForm';
 import AppointmentsList from './AppointmentsList';
+import AppointmentHistory from './AppointmentListHistory';
 import AppointmentCreate from './AppointmentCreateForm';
 import ManufacturersList from './ManufacturersList';
 import ManufacturerCreate from './ManufacturerCreateForm';
