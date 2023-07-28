@@ -13,6 +13,7 @@ import TechnicianCreate from './TechnicianCreateForm';
 import AppointmentsList from './AppointmentsList';
 import AppointmentCreate from './AppointmentCreateForm';
 import ManufacturersList from './ManufacturersList';
+import AppointmentHistory from './AppointmentListHistory';
 import ManufacturerCreate from './ManufacturerCreateForm';
 import ModelsList from './VehicleModelsList';
 import ModelCreate from './VehicleModelCreateForm';
@@ -38,7 +39,8 @@ function App() {
           <Route path="/technicians/new" element={<TechnicianCreate />} />
           <Route path="/appointments" element={<AppointmentsList />} />
           <Route path="/appointments/new" element={<AppointmentCreate />} />
-          <Route path="/manufacturers" element={<ManufacturersList />} Ad/>
+          <Route path="/appointments/history" element={<AppointmentHistory />} />
+          <Route path="/manufacturers" element={<ManufacturersList />} />
           <Route path="/manufacturers/new" element={<ManufacturerCreate />} />
           <Route path="/models" element={<ModelsList />} />
           <Route path="/models/new" element={<ModelCreate />} />

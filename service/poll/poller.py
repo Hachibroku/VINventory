@@ -24,15 +24,15 @@ def poll(repeat=True):
             print(response.status_code)
             if response.status_code == 200:
                 automobiles = response.json()
-                for automobile in automobiles["automobiles"]:
+                for automobile in automobiles["autos"]:
                     AutomobileVO.objects.update_or_create(
-                        import_href=automobile['href'],
+                        vin=automobile['vin'],
                         defaults={
                             'vin': automobile['vin'],
                             'sold': automobile['sold'],
                         }
                     )
-                print(f'Imported {len(automobiles["automobiles"])} automobiles')
+                print(f'Imported {len(automobiles["autos"])} automobiles')
             else:
                 print(f'Error in API call: {response.status_code}')
 

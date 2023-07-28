@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-export default function AppointmentsList() {
+export default function AppointmentHistory() {
   const [appointments, setAppointments] = useState(null);
+  const [search, setSearch] = useState('');
   const [automobiles, setAutomobiles] = useState([]);
+
 
   const getAppointments = async () => {
     const appointmentsUrl = `http://localhost:8080/api/appointments/`;
     const response = await fetch(appointmentsUrl);
     if (response.ok) {
       const listAppointments = await response.json();
+      console.log(listAppointments)
       setAppointments(listAppointments.appointment);
     }
   };
@@ -25,36 +28,35 @@ export default function AppointmentsList() {
 
   useEffect(() => {
     getAppointments();
-    getAutomobiles();
   }, []);
 
-  const updateAppointmentStatus = async (id, status) => {
-    const updateUrl = `http://localhost:8080/api/appointments/${id}/${status}/`;
-    const response = await fetch(updateUrl, { method: 'PUT' });
+  const handleSearch = event => {
+    setSearch(event.target.value);
+  };
 
-    if (response.ok) {
-      getAppointments();
-    }
-  }
+  const filteredAppointments = appointments?.filter(appointment => {
+    return appointment.vin.toLowerCase().includes(search.toLowerCase());
+  })
 
   if (appointments === null) {
     return null;
   }
 
-  const filteredAppointments = appointments.filter(appointment =>
-    appointment.status !== 'Cancelled' && appointment.status !== 'Finished');
-
   return (
     <>
+      <div className="form-group">
+        <input type="text" className="form-control" placeholder="Search by VIN" value={search} onChange={handleSearch} />
+      </div>
       <table className="table table-striped">
         <thead>
           <tr>
             <th>Date and Time</th>
+            <th>VIP</th>
             <th>Reason</th>
             <th>VIN</th>
             <th>Customer</th>
             <th>Technician</th>
-            <th>VIP</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -62,25 +64,12 @@ export default function AppointmentsList() {
             return (
               <tr key={appointment.id}>
                 <td>{appointment.date_time}</td>
+                <td> {autos.sold ? 'Yes': 'No'} </td>
                 <td>{appointment.reason}</td>
                 <td>{appointment.vin}</td>
                 <td>{appointment.customer}</td>
                 <td>{appointment.technician.first_name}</td>
-                <td> {autos.sold ? 'Yes': 'No'} </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => updateAppointmentStatus(appointment.id, 'cancel')}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => updateAppointmentStatus(appointment.id, 'finish')}
-                  >
-                    Finish
-                  </button>
-                </td>
+                <td>{appointment.status}</td>
               </tr>
             );
           })}
