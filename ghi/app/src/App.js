@@ -13,7 +13,6 @@ import TechnicianCreate from './TechnicianCreateForm';
 import AppointmentsList from './AppointmentsList';
 import AppointmentCreate from './AppointmentCreateForm';
 import ManufacturersList from './ManufacturersList';
-import AppointmentHistory from './AppointmentListHistory';
 import ManufacturerCreate from './ManufacturerCreateForm';
 import ModelsList from './VehicleModelsList';
 import ModelCreate from './VehicleModelCreateForm';
