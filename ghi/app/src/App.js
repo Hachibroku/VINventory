@@ -19,7 +19,6 @@ import ModelsList from './VehicleModelsList';
 import ModelCreate from './VehicleModelCreateForm';
 import AutomobilesList from './AutomobilesList';
 import AutomobileCreate from './AutomobileCreateForm';
-import AppointmentHistory from './AppointmentHistory';
 
 function App() {
   return (
@@ -46,7 +45,6 @@ function App() {
           <Route path="/models/new" element={<ModelCreate />} />
           <Route path="/automobiles" element={<AutomobilesList />} />
           <Route path="/automobiles/new" element={<AutomobileCreate />} />
-          <Route path="/appointments/history" element={<AppointmentHistory />} />
         </Routes>
       </div>
     </BrowserRouter>
