@@ -166,7 +166,7 @@ def api_appointment(request, pk):
 def api_cancel_appointment(request, pk):
     try:
         appointment = Appointment.objects.get(id=pk)
-        appointment.status = "cancelled"
+        appointment.status = "Cancelled"
         appointment.save()
         return JsonResponse(
             appointment,
@@ -184,7 +184,7 @@ def api_cancel_appointment(request, pk):
 def api_finish_appointment(request, pk):
     try:
         appointment = Appointment.objects.get(id=pk)
-        appointment.status = "finished"
+        appointment.status = "Finished"
         appointment.save()
         return JsonResponse(
             appointment,
