@@ -7,7 +7,6 @@ export default function AutomobilesList() {
       const response = await fetch(automobilesUrl);
       if (response.ok) {
         const listAutomobiles = await response.json();
-        console.log(listAutomobiles)
         setAutomobiles(listAutomobiles.autos);
       }
     };
