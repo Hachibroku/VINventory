@@ -3,7 +3,7 @@
 Team:
 
 * Murphey Osmundson - Service microservice
-* Person 2 - Which microservice?
+* Ramon Gutierrez - Sales microservice
 
 ## Design
 CarCar was designed with React as it's front-end framework and Bootstrap as it's CSS library. This framework is instrumental in tying together the various microservices and providing a seamless user experience. By making asynchronous calls to each microservice, the front-end presents a unified and responsive interface to the users, effectively abstracting the complexity of the underlying system.
