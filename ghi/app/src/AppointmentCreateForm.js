@@ -39,44 +39,45 @@ export default function AppointmentCreate() {
         }
     }
 
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+
+      const data = {}
+      data.date_time = dateTime;
+      data.reason = reason;
+      data.vin = vin;
+      data.customer = customer;
+      data.technician = technician;
+
+      const appointmentUrl = 'http://localhost:8080/api/appointments/';
+      const fetchConfig = {
+        method: "post",
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      try {
+        const response = await fetch(appointmentUrl, fetchConfig);
+        if (response.ok) {
+          const newAppointment = await response.json();
+          setDateTime('');
+          setReason('');
+          setVin('');
+          setCustomer('');
+          setTechnician('');
+        } else {
+          throw new Error('Error creating appointment');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
+
     useEffect(() => {
         fetchData()
     }, [])
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const data = {}
-        data.date_time = dateTime;
-        data.reason = reason;
-        data.vin = vin;
-        data.customer = customer;
-        data.technician = technician;
-
-        const appointmentUrl = 'http://localhost:8080/api/appointments/';
-        const fetchConfig = {
-            method: "post",
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-        try {
-            const response = await fetch(appointmentUrl, fetchConfig);
-            if (response.ok) {
-                const newAppointment = await response.json();
-                setDateTime('');
-                setReason('');
-                setVin('');
-                setCustomer('');
-                setTechnician('');
-            } else {
-                throw new Error('Error creating appointment');
-            }
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
-    }
 
     return (
         <div className="row">
