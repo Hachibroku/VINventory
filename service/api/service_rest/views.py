@@ -82,7 +82,7 @@ def api_appointments(request, technician_id=None):
             content["technician"] = technician
         except Technician.DoesNotExist:
             return JsonResponse(
-                {"message": "The technician you are attempting to assign this appointment to does not exist"},
+                {"message":"The technician does not exist"},
                 status=400,
             )
 
